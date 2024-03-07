@@ -2,7 +2,6 @@ const Clinician = require('../models/clinician');
 
 // CREATE
 const createClinician = async (req, res) => {
-    console.log(req.body);
     const {firstName, lastName, NPI_number, state} = req.body;
     try {
         const clinician = await Clinician.create({
