@@ -1,4 +1,5 @@
 const Appointment = require('../models/appointment');
+const { Op } = require('sequelize');
 
 // CREATE APPOINTMENTS
 const createAppointment = async (req, res) => {
@@ -19,10 +20,22 @@ const createAppointment = async (req, res) => {
 // READ ALL APPOINTMENTS
 const getAppointments = async (req, res) => {
     try {
-        const appointments = await Appointment.findAll();
-        res.json(appointments);
+        if (req.query.start && req.query.end) {
+            const { start, end } = req.query;
+            const appointments = await Appointment.findAll({
+                where: {
+                    appointmentTime: {
+                      [Op.between]: [start, end]
+                    }
+                  }
+            });
+            res.json(appointments);
+        } else {
+            const appointments = await Appointment.findAll();
+            res.json(appointments);
+        }
     } catch (error) {
-        res.status(500).json({ error: 'Unable to fetch appointments' });
+        res.status(500).json({ error: 'Unable to fetch appointments ' + String(error)});
     }
 };
 
