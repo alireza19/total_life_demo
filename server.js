@@ -6,9 +6,11 @@ const app = express();
 app.use(express.json());
 
 const clinicianRoutes = require('./routes/clinician');
+const patientRoutes = require('./routes/patient');
 
 // Mount routes
 app.use('/clinician', clinicianRoutes);
+app.use('/patient', patientRoutes);
 
 // Sync models with the database
 db.sync()
